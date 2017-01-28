@@ -1,4 +1,5 @@
-html,body{
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -7,12 +8,14 @@ html,body{
 
 .hex {
     position: absolute;
-    width: 25px; 
+    width: 25px;
     height: 14.43px;
     background-color: #fecf2d;
     margin: 7.22px 0;
     border-left: solid 1px #333333;
     border-right: solid 1px #333333;
+    animation-duration: 2s;
+    animation-timing-function: linear;
 }
 
 .hex:before,
@@ -41,14 +44,19 @@ html,body{
     border-left: solid 1.4142px #333333;
 }
 
-.dir-1{
+.dir-1 {
     animation-name: dir-1;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    right: auto;
 }
 
-@keyframes dir-1{
-    0% { transform: rotate(0deg); right: 0px; top: 0; }
-    100% { transform: rotate(360deg); right: 110px; top: 25px; }
+@keyframes dir-1 {
+    0% {
+        transform: rotate(0deg);
+        right: 0px;
+        top: 0;
+    }
+    100% {
+        transform: rotate(360deg);
+        right: 110px;
+        top: 25px;
+    }
 }
