@@ -6,7 +6,7 @@ html,body{
 }
 
 .hex {
-    position: relative;
+    position: absolute;
     width: 25px; 
     height: 14.43px;
     background-color: #fecf2d;
@@ -39,4 +39,16 @@ html,body{
     bottom: -8.8388px;
     border-bottom: solid 1.4142px #333333;
     border-left: solid 1.4142px #333333;
+}
+
+.dir-1{
+    animation-name: dir-1;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    right: auto;
+}
+
+@keyframes dir-1{
+    0% { transform: rotate(0deg); right: 0px; top: 0; }
+    100% { transform: rotate(360deg); right: 110px; top: 25px; }
 }
