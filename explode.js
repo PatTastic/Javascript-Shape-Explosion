@@ -1,7 +1,69 @@
-var explode = {classes: [], tooMuch: false};
+var explode = {classes: [], tooMuch: false, options: {}};
 
 explode.setup = function(setup){
-    explode.setup = setup;
+    if(setup.explodeOn == ""){
+        setup.explodeOn = "html";
+    }
+    
+    if(setup.min < 1){
+        setup.min = 1;
+    }
+    else if(setup.min > 500){
+        setup.min = 500;
+    }
+    
+    if(setup.max < 10){
+        setup.max = 10;
+    }
+    else if(setup.max > 10000){
+        setup.max = 10000;
+    }
+    
+    if(setup.possibilities < 1){
+        setup.possibilities = 1;
+    }
+    else if(setup.possibilities > 500){
+        setup.possibilities = 500;
+    }
+    
+    if(setup.rotation != true && setup.rotation != false){
+        setup.rotation = false;
+    }
+    
+    if(setup.duration < 0.1){
+        setup.duration = 0.1;
+    }
+    else if(setup.duration > 300){ //5m
+        setup.duration = 300;
+    }
+    
+    if(setup.timingFunction != "linear" && setup.timingFunction != "ease"
+    && setup.timingFunction != "ease-in" && setup.timingFunction != "ease-out"
+    && setup.timingFunction != "ease-in-out" && setup.timingFunction != "step-start"
+    && setup.timingFunction != "step-end" && setup.timingFunction != "initial"
+    && setup.timingFunction != "inherit" && setup.timingFunction.indexOf("steps") < 0
+    && setup.timingFunction.indexOf("cubic-bezier") < 0){
+        setup.timingFunction = "linear";
+    }
+    
+    if(setup.appendTo == ""){
+        setup.appendTo = "document.body";
+    }
+    
+    if(setup.containerId == ""){
+        setup.containerId = "explosion-container";
+    }
+    
+    if(setup.dontUseCSS != true && setup.dontUseCSS != false){
+        setup.dontUseCSS = false;
+    }
+    
+    if(setup.htmlElement == "" && setup.dontUseCSS == true){
+        setup.dontUseCSS = false;
+    }
+    
+    explode.options = setup;
+    explode.init();
 };
 
 explode.init = function(){
@@ -63,9 +125,9 @@ explode.init = function(){
     styles += "</style>";
 
     $(document.head).append(styles);
-});
+};
 
-$(explode.explodeOn).click(function(e){
+$(document).on("click", explode.options.explodeOn, function(e){
     if(!explode.tooMuch){
         var id = Math.floor(Math.random() * 89999 + 10000);
         var x = (e.pageX - (25 / 2)) + 'px';
