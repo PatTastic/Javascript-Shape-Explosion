@@ -15,6 +15,7 @@ $("document").ready(function(){
         dontUseCSS: false,                      // false if you want only a HTML element to be the object (ex: unicode character)
         htmlElement: "",                        // dontUseCSS must be false, create your HTML element here
         hardwareTest: true,                     // whether or not to test the users device for preformance capabilities
-        hardwareMax: 2                          // hardwareTest must be true, max seconds until explode.js is disabled
+        hardwareMax: 2,                         // hardwareTest must be true, max seconds until explode.js is disabled
+        logging: false                          // whether or not to log errors (heads up, will probably get spammy quickly)
     });
 });
