@@ -1,12 +1,12 @@
 html,
-body {
+body{
     height: 100%;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
-.hex {
+.hex{
     position: absolute;
     width: 25px;
     height: 14.43px;
@@ -19,7 +19,7 @@ body {
 }
 
 .hex:before,
-.hex:after {
+.hex:after{
     content: "";
     position: absolute;
     z-index: 1;
@@ -32,29 +32,29 @@ body {
     left: 2.6612px;
 }
 
-.hex:before {
+.hex:before{
     top: -8.8388px;
     border-top: solid 1.4142px #333333;
     border-right: solid 1.4142px #333333;
 }
 
-.hex:after {
+.hex:after{
     bottom: -8.8388px;
     border-bottom: solid 1.4142px #333333;
     border-left: solid 1.4142px #333333;
 }
 
-.dir-1 {
+.dir-1{
     animation-name: dir-1;
 }
 
-@keyframes dir-1 {
-    0% {
+@keyframes dir-1{
+    0%{
         transform: rotate(0deg);
         right: 0px;
         top: 0;
     }
-    100% {
+    100%{
         transform: rotate(360deg);
         right: 110px;
         top: 25px;
