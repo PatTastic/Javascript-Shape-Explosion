@@ -87,15 +87,6 @@ explode.setup = function(setup){
         setup.maxObjects = (setup.objectsPerExplosion * 20);
     }
     
-    if(setup.dontUseCSS != true && setup.dontUseCSS != false){
-        errors.push("dontUseCSS not found, setting to false");
-        setup.dontUseCSS = false;
-    }
-    if(setup.htmlElement == "" && setup.dontUseCSS == true){
-        errors.push("htmlElement not found, setting dontUseCSS to false");
-        setup.dontUseCSS = false;
-    }
-    
     if(setup.hardwareTest != true && setup.hardwareTest != false){
         errors.push("hardwareTest not found, setting to true");
         setup.hardwareTest = true;
@@ -119,6 +110,7 @@ explode.setup = function(setup){
         }
     }
     
+    setup.hardwareMax *= 1000;
     explode.options = setup;
     explode.init();
 };
@@ -132,16 +124,16 @@ explode.init = function(){
     };
     
     var start = new Date().getTime();
-    for(var i=0; i<100; i++){
-        explode.classes.push(Math.floor(Math.random() * 100 + 1));
-        dirs.top.push(Math.floor(Math.random() * 200 + 10));
-        dirs.right.push(Math.floor(Math.random() * 200 + 10));
-        dirs.bottom.push(Math.floor(Math.random() * 200 + 10));
-        dirs.left.push(Math.floor(Math.random() * 200 + 10));
+    for(var i=0; i<explode.options.possibilities; i++){
+        explode.classes.push(Math.floor(Math.random() * explode.options.possibilities + 1));
+        dirs.top.push(Math.floor(Math.random() * explode.options.max + explode.options.min));
+        dirs.right.push(Math.floor(Math.random() * explode.options.max + explode.options.min));
+        dirs.bottom.push(Math.floor(Math.random() * explode.options.max + explode.options.min));
+        dirs.left.push(Math.floor(Math.random() * explode.options.max + explode.options.min));
     }
     var end = new Date().getTime();
     console.log("explode.js initiated in " + (end-start) + " milliseconds.");
-    if((end - start) > 2000){
+    if(explode.options.hardwareTest && ((end - start) > explode.options.hardwareMax)){
         explode.options.tooMuch = true;
         console.log("Your device appears to be having a hard time.");
         console.log("explode.js will not run.");
@@ -150,11 +142,15 @@ explode.init = function(){
     }
 
     var styles = "<style>";
-    for(var i=0; i<100; i++){
+    styles += ".explosion-object{";
+    styles += "position: absolute;";
+    styles += "animation-duration: " + explode.options.duration + "s;";
+    styles += "animation-timing-function: " + explode.options.timingFunction + ";}";
+    for(var i=0; i<explode.options.possibilities; i++){
         styles += ".dir-" + (i + 1) + "{";
         styles += "animation-name: dir-" + (i + 1) + ";}";
     }
-    for(var i=0; i<100; i++){
+    for(var i=0; i<explode.options.possibilities; i++){
         var rand = {
             one: (Math.floor(Math.random() * 2 + 1)),
             two: Math.floor(Math.random() * 2 + 1)
@@ -163,14 +159,14 @@ explode.init = function(){
         styles += "@keyframes dir-" + (i + 1) + "{";
         for(var j=0; j<2; j++){
             if(j == 0){
-                styles += "0% {transform: rotate(0deg);";
+                if(explode.options.rotation){ styles += "0% {transform: rotate(0deg);"; }
                 if(rand.one == 1) { styles += "top: 0px;"; }
                 else{ styles += "bottom: 0px;"; }
                 if(rand.two == 1) { styles += "right: 0px;"; }
                 else{ styles += "left: 0px;"; }
             }
             else{
-                styles += "100% {transform: rotate(360deg);";
+                if(explode.options.rotation){ styles += "100% {transform: rotate(360deg);"; }
                 
                 if(rand.one == 1){
                     styles += "top: " + dirs.top[i] + "px;";
@@ -195,7 +191,7 @@ explode.init = function(){
 };
 
 $(document).on("click", explode.options.explodeOn, function(e){
-    if(!explode.options.tooMuch){
+    if((!explode.options.tooMuch) && ($(".explosion-object").length <= explode.options.maxObjects)){
         var id = Math.floor(Math.random() * 89999 + 10000);
         var x = (e.pageX - (25 / 2)) + 'px';
         var y = (e.pageY - (25 / 2)) + 'px';
@@ -205,19 +201,25 @@ $(document).on("click", explode.options.explodeOn, function(e){
             "top": y
         });
 
-        var elems = "<div id='explosion-container'>";
-        for(var i=0; i<10; i++){
-            elems += "<div class='hex dir-";
-            elems += Math.floor(Math.random() * 100 + 1);
-            elems += "'></div>";
+        var elems = "<div id='" + explode.options.containerId + "'>";
+        for(var i=0; i<explode.options.objectsPerExplosion; i++){
+            elems += "<div class='explosion-object";
+            for(var j=0; j<explode.options.additionalClasses.length; j++){
+                elems += " " + explode.options.additionalClasses[j];
+            }
+            elems += " dir-" + Math.floor(Math.random() * explode.options.possibilities + 1) + "'>";
+            if(explode.options.dontUseCSS){
+                elems += explode.options.htmlElement
+            }
+            elems += "</div>";
         }
         elems += "</div>";
 
         div.append(elems);
-        $(document.body).append(div);
+        $(explode.options.appendTo).append(div);
 
         setTimeout(function(){
             $("#" + id).remove();
-        }, 2000);
+        }, (explode.options.duration * 1000));
     }
 });
