@@ -100,6 +100,11 @@ explode.setup = function(setup){
         setup.hardwareMax = 10;
     }
     
+    if(setup.dimensions.w == 0 || setup.dimensions.h == 0){
+        errors.push("dimensions either not found or incorrect, will not use")
+        setup.dimensions = {w: 0, h: 0};
+    }
+    
     if(setup.logging != true && setup.logging != false){
         setup.logging = false;
     }
@@ -193,8 +198,15 @@ explode.init = function(){
 $(document).on("click", explode.options.explodeOn, function(e){
     if((!explode.options.tooMuch) && ($(".explosion-object").length <= explode.options.maxObjects)){
         var id = Math.floor(Math.random() * 89999 + 10000);
-        var x = (e.pageX - (25 / 2)) + 'px';
-        var y = (e.pageY - (25 / 2)) + 'px';
+        var x, y;
+        if(explode.options.dimensions.w != 0){
+            x = (e.pageX - (explode.options.dimensions.w / 2)) + "px";
+            y = (e.pageY - (explode.options.dimensions.h / 2)) + "px";
+        }
+        else{
+            x = e.pageX + "px";
+            y = e.pageY + "px";
+        }
         var div = $("<div id='" + id + "'>").css({
             "position": "absolute",
             "left": x,
