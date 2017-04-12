@@ -14,6 +14,8 @@ $("document").ready(function(){
         objectsPerExplosion: 10,                // how many object are caused by one explosion
         maxObjects: 50,                         // max amount of explosion objects that can be on the screen at once.
         htmlElement: "",                        // insert an html element into the explosion element, leave blank for nothing
+        removeUnseen: true,                     // delete an object when it goes off screen
+        testFrequency: 50,                      // frequency to test if elements are still on the page. removeUnseen must be true
         hardwareTest: true,                     // whether or not to test the users device for performance capabilities
         hardwareMax: 2,                         // hardwareTest must be true, max seconds until explode.js is disabled
         dimensions: {                           // dimensions of explosion object. width and height must be both either 0 or > 0

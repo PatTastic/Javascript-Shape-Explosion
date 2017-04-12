@@ -96,6 +96,15 @@ var explode = {
             setup.maxObjects = (setup.objectsPerExplosion * 20);
         }
 
+        if(setup.testFrequency < 10){
+            errors.push("testFrequency under the minimum, setting to 10");
+            setup.testFrequency = 10;
+        }
+        else if(setup.testFrequency > 5000){
+            errors.push("testFrequency over the maximum, setting to 5000");
+            setup.testFrequency = 5000;
+        }
+
         if(setup.hardwareTest != true && setup.hardwareTest != false){
             errors.push("hardwareTest not found, setting to true");
             setup.hardwareTest = true;
@@ -126,7 +135,12 @@ var explode = {
 
         setup.hardwareMax *= 1000;
         explode.options = setup;
+
         $(explode.options.explodeOn).on(explode.options.onEvent, explode.run);
+        if(setup.removeUnseen){
+            setInterval(explode.keepChecking, explode.options.testFrequency);
+        }
+
         explode.init();
     },
     init: function(){
@@ -243,6 +257,10 @@ var explode = {
             setup.maxObjects = 50;
         if(!doesExist(setup.htmlElement))
             setup.htmlElement = "<img src='http://patwilken.me/favicon.ico'/>";
+        if(!doesExist(setup.removeUnseen))
+            setup.removeUnseen = false;
+        if(!doesExist(setup.testFrequency))
+            setup.testFrequency = 100;
         if(!doesExist(setup.hardwareTest))
             setup.hardwareTest = true;
         if(!doesExist(setup.hardwareMax))
@@ -301,5 +319,46 @@ var explode = {
                 $("#" + id).remove();
             }, (explode.options.duration * 1000));
         }
+    },
+    keepChecking: function(){
+        if($(".explosion-object").length > 0){
+            var objs = $(".explosion-object");
+            var html = {
+                w: $("html").width(),
+                h: $("html").height()
+            };
+
+            for(var i=objs.length-1; i>=0; i--){
+                if(!$(objs[i]).isInViewport()){
+                    $(objs[i]).remove();
+                }
+            }
+        }
     }
+};
+
+$.fn.isInViewport = function(){
+    var elem = {
+        top: $(this).offset().top,
+        right: $(this).offset().left + $(this).outerWidth(),
+        bottom: $(this).offset().top + $(this).outerHeight(),
+        left: $(this).offset().left
+    };
+    var view = {
+        top: $(window).scrollTop(),
+        right: $(window).scrollLeft() + $(window).width(),
+        bottom: $(window).scrollTop() + $(window).height(),
+        left: $(window).scrollLeft()
+    };
+    var visible = true;
+
+    // check viewport
+    if((elem.top <= view.top || elem.bottom <= view.top)
+    || (elem.right >= view.right || elem.left >= view.right)
+    || (elem.bottom >= view.bottom || elem.top >= view.bottom)
+    || (elem.left <= view.left || elem.right <= view.left)){
+        visible = false;
+    }
+
+    return visible;
 };
