@@ -56,7 +56,7 @@ ___
     - int, defaults to 50
     - no less than objectsPerExplosion, no more than _objectsPerExplosion * 20_
   - htmlElement
-    - string, defaults to "<img src='http://patwilken.me/favicon.ico'/>"
+    - string, defaults to "&lt;img src='http://patwilken.me/favicon.ico'/>"
     - create an element to be placed inside the explosion object
   - hardwareTest
     - bool, defaults to true
