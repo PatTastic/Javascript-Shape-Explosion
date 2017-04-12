@@ -11,6 +11,7 @@ ___
 <a href="#setup">Setup</a><br>
 <a href="#minimal-setup">Minimal Setup</a><br>
 <a href="#verbose-setup">Verbose Setup</a><br>
+<a href="#demo">Demo</a><br>
 <a href="#todo">TODO</a>
 ___
 
@@ -129,6 +130,10 @@ $(document).ready(function() {
     });
 });
 ```
+___
+
+## Demo
+<a href="http://demo.patwilken.me/javascript-shape-explosion.html" target="_blank">View Demo</a>
 ___
 ## TODO
   - Nothing
