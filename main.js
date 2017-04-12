@@ -1,6 +1,7 @@
 $("document").ready(function(){
     explode.setup({
         explodeOn: "html",                      // HTML element the user must click to preform an explosion
+        onEvent: "click",                       // the event to trigger the explosion on
         min: 20,                                // minimum distance an object will travel
         max: 300,                               // maximum distance an object will travel
         possibilities: 100,                     // number of possbile combinations

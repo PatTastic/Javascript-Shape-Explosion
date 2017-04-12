@@ -22,6 +22,9 @@ ___
   - explodeOn
     - string, defaults to "html"
     - HTML element the user must click to preform an explosion
+  - onEvent
+    - string, default to "click"
+    - the event to trigger the explosion on
   - min
     - ing, defaults to 20
     - minimum distance an object will travel (pixels) _1 - 500_
@@ -71,7 +74,6 @@ ___
   - logging
     - bool, defaults to true
     - Whether or not to log errors (heads up, will probably get spammy quickly)
-
 ___
 
 ### Minimal Setup
@@ -89,6 +91,7 @@ ___
 $(document).ready(function() {
     explode.setup({
         explodeOn: "html element",
+        onEvent: "any one of these https://www.w3schools.com/js/js_events.asp",
         min: 1 - 500,
         max: 10 - 10000,
         possibilities: 1 - 500,
@@ -111,3 +114,6 @@ $(document).ready(function() {
     });
 });
 ```
+___
+### TODO
+  - Prettier overflow control
